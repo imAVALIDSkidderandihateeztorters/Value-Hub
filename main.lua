@@ -129,5 +129,4 @@ players.PlayerRemoving:Connect(function(player)
     end
 end)
    end,
-   createESPBox:Set(false)
 })
