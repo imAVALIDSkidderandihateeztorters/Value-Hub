@@ -99,27 +99,6 @@ local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
 local Workspace = game:GetService("Workspace")
 
--- The following screen gui, frame and button creation may be deleted if you are using a custom GUI library. 
--- Create the screen gui
-local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "ESPToggleGui"
-screenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
-
--- Create a frame
-local mainFrame = Instance.new("Frame")
-mainFrame.Name = "MainFrame"
-mainFrame.Size = UDim2.new(1, 0, 1, 0) 
-mainFrame.BackgroundTransparency = 1  
-mainFrame.Parent = screenGui
-
--- Create the button
-local toggleButton = Instance.new("TextButton") 
-toggleButton.Name = "ToggleButton"
-toggleButton.Size = UDim2.new(0, 200, 0, 50)
-toggleButton.Position = UDim2.new(0.5, -100, 0.5, -25)
-toggleButton.Text = "Toggle ESP"
-toggleButton.Parent = mainFrame
-
 local function getCharacter(player)
     return Workspace:FindFirstChild(player.Name)
 end
