@@ -42,7 +42,7 @@ local MainSection = MainTab:CreateSection("Main")
 
 
 local EspTab = Window:CreateTab("Esp", nil) -- Title, Image
-local EspSection = EspTab:CreateSection("Esp")
+local EspSection = EspTab:CreateSection("Esp CANT TURN OFF!")
 
 Rayfield:Notify({
    Title = "Script Executed Successfully!",
