@@ -37,6 +37,10 @@ local Window = Rayfield:CreateWindow({
    }
 })
 
+local EspTab = Window:CreateTab("Esp", nil) -- Title, Image
+local EspSection = MainTab:CreateSection("Esp")
+
+
 local MainTab = Window:CreateTab("Player", nil) -- Title, Image
 local MainSection = MainTab:CreateSection("Main")
 
