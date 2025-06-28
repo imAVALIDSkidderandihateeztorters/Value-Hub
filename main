@@ -37,5 +37,12 @@ local Window = Rayfield:CreateWindow({
    }
 })
 
-local MainTab = Window:CreateTab("Main", nil) -- Title, Image
-local Section = Tab:CreateSection("Main")
+local MainTab = Window:CreateTab("Home", nil) -- Title, Image
+local MainSection = MainTab:CreateSection("Main")
+
+Rayfield:Notify({
+   Title = "Script Executed Successfully!",
+   Content = "Have Fun.",
+   Duration = 2.5,
+   Image = "rewind",
+})
