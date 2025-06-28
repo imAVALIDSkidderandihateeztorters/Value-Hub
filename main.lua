@@ -129,5 +129,5 @@ players.PlayerRemoving:Connect(function(player)
     end
 end)
    end,
-   OutlinePlayerToggle:Set(false)
+   createESPBox:Set(false)
 })
