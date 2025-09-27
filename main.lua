@@ -2034,7 +2034,31 @@ do -- Example UI
 	local Tab3 = Window:AddTab("Player")
 
 	do -- Elements
-		Tab3:AddButton("Button", function()
+		Tab3:AddButton("Tp King Tower", function()
+
+				-- Teleport if on Blue team
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+local teleportPosition = Vector3.new(3, 36, 90)
+
+local function teleportIfBlueTeam()
+	if LocalPlayer.Team and LocalPlayer.Team.Name == "Blue" then
+		local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+		local hrp = character:WaitForChild("HumanoidRootPart")
+		hrp.CFrame = CFrame.new(teleportPosition)
+	end
+end
+
+-- run when character spawns
+LocalPlayer.CharacterAdded:Connect(function()
+	task.wait(1) -- wait for load
+	teleportIfBlueTeam()
+end)
+
+-- also check immediately
+teleportIfBlueTeam()
+
 			
 		end)
 
