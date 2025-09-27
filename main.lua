@@ -2035,28 +2035,42 @@ do -- Example UI
 
 	do -- Elements
 		Tab3:AddButton("Tp King Tower", function()
-				-- Team-based teleport script
 -- Team-based teleport script
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
--- Coordinates for each team
-local teamTeleports = {
-	Blue = Vector3.new(3, 36, 90),
-	Red = Vector3.new(-1, 20, -144)
+-- Initial teleport locations (when the script runs)
+local initialTeleports = {
+	Red = Vector3.new(-1, 20, -144),
+	Blue = Vector3.new(3, 36, 90)
 }
 
--- Teleport function
-local function teleportByTeam()
-	if LocalPlayer.Team and teamTeleports[LocalPlayer.Team.Name] then
-		local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
-		local hrp = character:WaitForChild("HumanoidRootPart")
-		hrp.CFrame = CFrame.new(teamTeleports[LocalPlayer.Team.Name])
-	end
+-- Respawn-only teleport locations
+local respawnTeleports = {
+	Red = Vector3.new(-3, 38, 390),
+	Blue = Vector3.new(-3, 38, -444)
+}
+
+-- Function to teleport a character
+local function teleportTo(character, position)
+	local hrp = character:WaitForChild("HumanoidRootPart")
+	hrp.CFrame = CFrame.new(position)
 end
 
--- Run once when script loads
-teleportByTeam()
+-- Initial teleport when script runs
+if LocalPlayer.Team and initialTeleports[LocalPlayer.Team.Name] then
+	local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+	teleportTo(character, initialTeleports[LocalPlayer.Team.Name])
+end
+
+-- Teleport on respawn
+LocalPlayer.CharacterAdded:Connect(function(character)
+	task.wait(0.5) -- short delay to ensure character loads
+	if LocalPlayer.Team and respawnTeleports[LocalPlayer.Team.Name] then
+		teleportTo(character, respawnTeleports[LocalPlayer.Team.Name])
+	end
+end)
+
 
 
 
