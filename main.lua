@@ -2075,8 +2075,7 @@ end)
 
 	end
 
-	Tab:Show()
-	library:FormatWindows()
+
 
 	do -- Elements
 		Tab3:AddButton("Infinite Health", function()
