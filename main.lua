@@ -2077,4 +2077,24 @@ end)
 
 	Tab:Show()
 	library:FormatWindows()
+
+	do -- Elements
+		Tab3:AddButton("Infinite Health", function()
+			local player = game:GetService("Players").LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+humanoid.MaxHealth = math.huge
+humanoid.Health = math.huge
+-- Ensure health stays infinite
+humanoid.HealthChanged:Connect(function()
+   if humanoid.Health < humanoid.MaxHealth then
+       humanoid.Health = humanoid.MaxHealth
+   end
+end)
+		end)
+
+	end
+
+	Tab:Show()
+	library:FormatWindows()
 end
