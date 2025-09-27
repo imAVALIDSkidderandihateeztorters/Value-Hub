@@ -2035,9 +2035,7 @@ do -- Example UI
 
 	do -- Elements
 		Tab3:AddButton("Tp King Tower", function()
-
-				-- Teleport if on Blue team
--- Team-based teleport script
+				-- Team-based teleport script
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
@@ -2066,10 +2064,10 @@ LocalPlayer.CharacterAdded:Connect(function()
 end)
 
 
+
+
 			end)
-
 	end
-
 	Tab:Show()
 	library:FormatWindows()
 end
