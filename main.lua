@@ -2096,7 +2096,7 @@ LocalPlayer.CharacterAdded:Connect(function(character)
 	handleTeleport(character, respawnTeleports)
 end)
 
-
+	do -- Elements
 		Tab3:AddButton("Reset Player", function()
 
 
