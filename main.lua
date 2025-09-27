@@ -2034,7 +2034,7 @@ do -- Example UI
 	local Tab3 = Window:AddTab("Player")
 
 	do -- Elements
-		Tab3:AddButton("Tp King Tower", function()
+		Tab3:AddButton("Tp King Tower / might bug", function()
 -- Team-based teleport script
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
