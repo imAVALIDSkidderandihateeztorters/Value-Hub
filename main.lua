@@ -2051,25 +2051,51 @@ local respawnTeleports = {
 	Blue = Vector3.new(-3, 38, -444)
 }
 
+-- Name of the spectator/neutral team
+local spectatorTeamName = "Spectator"
+
 -- Function to teleport a character
 local function teleportTo(character, position)
 	local hrp = character:WaitForChild("HumanoidRootPart")
 	hrp.CFrame = CFrame.new(position)
 end
 
+-- Function to display a system message in the bottom-right
+local function sendMessage(text)
+	game.StarterGui:SetCore("ChatMakeSystemMessage", {
+		Text = text,
+		Color = Color3.new(1, 0, 0), -- red text
+		Font = Enum.Font.SourceSansBold,
+		TextSize = 18
+	})
+end
+
+-- Function to handle teleport logic
+local function handleTeleport(character, teleportTable)
+	if LocalPlayer.Team then
+		if LocalPlayer.Team.Name == spectatorTeamName then
+			-- Player is on Spectator, send message
+			sendMessage("You must be on a team.")
+		elseif teleportTable[LocalPlayer.Team.Name] then
+			teleportTo(character, teleportTable[LocalPlayer.Team.Name])
+		end
+	end
+end
+
 -- Initial teleport when script runs
-if LocalPlayer.Team and initialTeleports[LocalPlayer.Team.Name] then
-	local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
-	teleportTo(character, initialTeleports[LocalPlayer.Team.Name])
+if LocalPlayer.Character then
+	handleTeleport(LocalPlayer.Character, initialTeleports)
+else
+	LocalPlayer.CharacterAdded:Wait()
+	handleTeleport(LocalPlayer.Character, initialTeleports)
 end
 
 -- Teleport on respawn
 LocalPlayer.CharacterAdded:Connect(function(character)
 	task.wait(0.5) -- short delay to ensure character loads
-	if LocalPlayer.Team and respawnTeleports[LocalPlayer.Team.Name] then
-		teleportTo(character, respawnTeleports[LocalPlayer.Team.Name])
-	end
+	handleTeleport(character, respawnTeleports)
 end)
+
 
 
 
