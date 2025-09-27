@@ -36,6 +36,12 @@ local Window = Rayfield:CreateWindow({
    }
 })
 
-local Tab = MainWindow:CreateTab("Main", 4483362458) -- Title, Image
-local Tab = PlayerWindow:CreateTab("Player", 4483362458) -- Title, Image
-local Tab = CardsWindow:CreateTab("Cards", 4483362458) -- Title, Image
+local MainTab = Window:CreateTab("Main", 4483362458) -- Title, Image
+local MainSection = Tab:CreateSection("Main")
+
+local Button = Tab:CreateButton({
+   Name = "Tp King Tower / Might Bug",
+   Callback = function()
+   -- The function that takes place when the button is pressed
+   end,
+})
