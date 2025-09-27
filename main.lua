@@ -2037,30 +2037,36 @@ do -- Example UI
 		Tab3:AddButton("Tp King Tower", function()
 
 				-- Teleport if on Blue team
+-- Team-based teleport script
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
-local teleportPosition = Vector3.new(3, 36, 90)
+-- Coordinates for each team
+local teamTeleports = {
+	Blue = Vector3.new(3, 36, 90),
+	Red = Vector3.new(-1, 20, -144)
+}
 
-local function teleportIfBlueTeam()
-	if LocalPlayer.Team and LocalPlayer.Team.Name == "Blue" then
+-- Teleport function
+local function teleportByTeam()
+	if LocalPlayer.Team and teamTeleports[LocalPlayer.Team.Name] then
 		local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
 		local hrp = character:WaitForChild("HumanoidRootPart")
-		hrp.CFrame = CFrame.new(teleportPosition)
+		hrp.CFrame = CFrame.new(teamTeleports[LocalPlayer.Team.Name])
 	end
 end
 
--- run when character spawns
+-- Run once when script loads
+teleportByTeam()
+
+-- Run again when character respawns
 LocalPlayer.CharacterAdded:Connect(function()
-	task.wait(1) -- wait for load
-	teleportIfBlueTeam()
+	task.wait(1) -- small delay so character fully loads
+	teleportByTeam()
 end)
 
--- also check immediately
-teleportIfBlueTeam()
 
-			
-		end)
+	
 
 	end
 
