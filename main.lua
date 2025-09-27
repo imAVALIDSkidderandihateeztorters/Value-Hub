@@ -2103,7 +2103,7 @@ end)
 getgenv().Host = Players.LocalPlayer;
 getgenv().ContextService = game:GetService'ContextActionService';
 
-local Key = 'F2'; -- Change key to anything
+
 
 local Method = 'Enum' -- You can change it to 'Enum, Health, Torso, Head, Joints' -- > DM ME @killserver IF YOU KNOW OF ANY MORE METHODS I CAN ADD < --
 
@@ -2135,7 +2135,7 @@ function Reset(Type:string, Properties:EnumItem)
     end
 end
 
-ContextService:BindAction('Kill', Reset, true, Enum.KeyCode[Key])
+ContextService:BindAction('Kill', Reset, true)
 
 
 	
