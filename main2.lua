@@ -40,6 +40,16 @@ local MainTab = Window:CreateTab("Main", 4483362458) -- Title, Image
 local Button = MainTab:CreateButton({
    Name = "Tp King Tower / Might Bug",
    Callback = function()
+      loadstring(game:HttpGet('https://raw.githubusercontent.com/imAVALIDSkidderandihateeztorters/Value-Hub/refs/heads/main/script1.lua'))()
+   end,
+})
+
+local PlayerTab = Window:CreateTab("Player", 4483362458) -- Title, Image
+local Button = PlayerTab:CreateButton({
+   Name = "MORE COMING SOON!!!",
+   Callback = function()
    -- The function that takes place when the button is pressed
    end,
 })
+
+
