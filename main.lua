@@ -2036,6 +2036,7 @@ do -- Example UI
 	do -- Elements
 		Tab3:AddButton("Tp King Tower", function()
 				-- Team-based teleport script
+-- Team-based teleport script
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
@@ -2057,11 +2058,6 @@ end
 -- Run once when script loads
 teleportByTeam()
 
--- Run again when character respawns
-LocalPlayer.CharacterAdded:Connect(function()
-	task.wait(1) -- small delay so character fully loads
-	teleportByTeam()
-end)
 
 
 
