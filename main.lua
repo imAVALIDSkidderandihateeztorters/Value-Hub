@@ -2094,7 +2094,6 @@ end
 LocalPlayer.CharacterAdded:Connect(function(character)
 	task.wait(0.5) -- short delay to ensure character loads
 	handleTeleport(character, respawnTeleports)
-end)
 
 			end)
 	end
