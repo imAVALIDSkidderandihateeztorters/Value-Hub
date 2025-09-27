@@ -2066,7 +2066,7 @@ LocalPlayer.CharacterAdded:Connect(function()
 end)
 
 
-	
+			end)
 
 	end
 
