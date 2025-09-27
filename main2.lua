@@ -36,6 +36,6 @@ local Window = Rayfield:CreateWindow({
    }
 })
 
-local Tab = Window:CreateTab("Main", 4483362458) -- Title, Image
-local Tab = Window:CreateTab("Player", 4483362458) -- Title, Image
-local Tab = Window:CreateTab("Cards", 4483362458) -- Title, Image
+local Tab = MainWindow:CreateTab("Main", 4483362458) -- Title, Image
+local Tab = PlayerWindow:CreateTab("Player", 4483362458) -- Title, Image
+local Tab = CardsWindow:CreateTab("Cards", 4483362458) -- Title, Image
