@@ -42,6 +42,6 @@ local MainSection = Tab:CreateSection("Main")
 local Button = Tab:CreateButton({
    Name = "Tp King Tower / Might Bug",
    Callback = function()
-   -- The function that takes place when the button is pressed
+      loadstring(game:HttpGet("https://raw.githubusercontent.com/imAVALIDSkidderandihateeztorters/Value-Hub/refs/heads/main/script1.lua"))()
    end,
 })
