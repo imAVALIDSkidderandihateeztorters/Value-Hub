@@ -2096,8 +2096,8 @@ LocalPlayer.CharacterAdded:Connect(function(character)
 	handleTeleport(character, respawnTeleports)
 end)
 
-
-Tab3:AddButton("Reset Player", function()
+	do
+		Tab3:AddButton("Reset Player", function()
 
 						getgenv().Players = game:GetService'Players';
 getgenv().Host = Players.LocalPlayer;
@@ -2138,7 +2138,7 @@ end
 ContextService:BindAction('Kill', Reset, true, Enum.KeyCode[Key])
 
 
-					end)
+	
 
 
 
