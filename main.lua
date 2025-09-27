@@ -2080,6 +2080,7 @@ end)
 
 	do -- Elements
 		Tab3:AddButton("Infinite Health", function()
+				
 			local player = game:GetService("Players").LocalPlayer
 			local character = player.Character or player.CharacterAdded:Wait()
 			local humanoid = character:WaitForChild("Humanoid")
@@ -2089,8 +2090,6 @@ end)
 			humanoid.HealthChanged:Connect(function()
    			if humanoid.Health < humanoid.MaxHealth then
        		humanoid.Health = humanoid.MaxHealth
-   		end
-	end)
 		end)
 	end
 	Tab:Show()
