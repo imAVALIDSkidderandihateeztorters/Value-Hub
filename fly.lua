@@ -1,93 +1,62 @@
-ocal RS, RunService, UIS, Players = 
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
 
-game:GetService("ReplicatedStorage"),
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+local Humanoid = Character:WaitForChild("Humanoid")
+local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
 
-game:GetService("RunService"),
+local flying = false
+local flySpeed = 100 --Set up it to for yourself
+local maxFlySpeed = 1000 --Set up it to for yourself
+local speedIncrement = 0.4 --Set up it to for yourself
+local originalGravity = workspace.Gravity
 
-game:GetService("UserInputService"),
+LocalPlayer.CharacterAdded:Connect(function(newCharacter) 
+    Character = newCharacter
+    Humanoid = Character:WaitForChild("Humanoid")
+    HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
+end)
 
-game:GetService("Players")
-
-
-local player     = Players.LocalPlayer
-
-local flyEvent   = RS:WaitForChild("FlyRequestEvent")
-
-local FLY_SPEED  = 50
-
-
-local inputState = {forwards=0, backwards=0, left=0, right=0, up=0, down=0}
-
-local isFlying, flyConn, ibConn, ieConn, bg, bv
-
-
--- teardown
-
-local function cleanup()
-
-	if flyConn then flyConn:Disconnect() flyConn = nil end
-
-	if bg     then bg:Destroy()          bg = nil     end
-
-	if bv     then bv:Destroy()          bv = nil     end
-
-	isFlying = false
-
+local function randomizeValue(value, range)
+    return value + (value * (math.random(-range, range) / 100))
 end
 
+local function fly()
+    while flying do
+        local MoveDirection = Vector3.new()
+        local cameraCFrame = workspace.CurrentCamera.CFrame
 
--- start flight
+        MoveDirection = MoveDirection + (UserInputService:IsKeyDown(Enum.KeyCode.W) and cameraCFrame.LookVector or Vector3.new())
+        MoveDirection = MoveDirection - (UserInputService:IsKeyDown(Enum.KeyCode.S) and cameraCFrame.LookVector or Vector3.new())
+        MoveDirection = MoveDirection - (UserInputService:IsKeyDown(Enum.KeyCode.A) and cameraCFrame.RightVector or Vector3.new())
+        MoveDirection = MoveDirection + (UserInputService:IsKeyDown(Enum.KeyCode.D) and cameraCFrame.RightVector or Vector3.new())
+        MoveDirection = MoveDirection + (UserInputService:IsKeyDown(Enum.KeyCode.Space) and Vector3.new(0, 1, 0) or Vector3.new())
+        MoveDirection = MoveDirection - (UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) and Vector3.new(0, 1, 0) or Vector3.new())
 
-local function startFlying(char)
+        if MoveDirection.Magnitude > 0 then
+            flySpeed = math.min(flySpeed + speedIncrement, maxFlySpeed) 
+            MoveDirection = MoveDirection.Unit * math.min(randomizeValue(flySpeed, 10), maxFlySpeed)
+            HumanoidRootPart.Velocity = MoveDirection * 0.5
+        else
+            HumanoidRootPart.Velocity = Vector3.new(0, 0, 0) 
+        end
 
-	if isFlying then return end
-
-	local hrp = char:FindFirstChild("HumanoidRootPart")
-
-	local hum = char:FindFirstChildOfClass("Humanoid")
-
-	if not (hrp and hum) then return end
-
-
-	isFlying = true
-
-	hum.PlatformStand = true
-
-
-	bg = Instance.new("BodyGyro",     hrp)
-
-	bg.MaxTorque = Vector3.new(1e9,1e9,1e9)
-
-	bg.P         = 9e4
-
-	bg.CFrame    = hrp.CFrame
-
-
-	bv = Instance.new("BodyVelocity", hrp)
-
-	bv.MaxForce = Vector3.new(1e9,1e9,1e9)
-
-	bv.Velocity = Vector3.zero
-
-
-	flyConn = RunService.RenderStepped:Connect(function()
-
-		local cam = workspace.CurrentCamera
-
-		if not cam then return end
-
-
-		local mv = cam.CFrame.LookVector  * (inputState.forwards - inputState.backwards)
-
-			+ cam.CFrame.RightVector * (inputState.right    - inputState.left)
-
-			+ Vector3.new(0,1,0)        * (inputState.up       - inputState.down)
-
-
-		bv.Velocity = (mv.Magnitude > 0 and mv.Unit * FLY_SPEED) or Vector3.zero
-
-		bg.CFrame   = CFrame.lookAt(hrp.Position, hrp.Position + cam.CFrame.LookVector)
-
-	end)
-
+        RunService.RenderStepped:Wait() 
+    end
 end
+
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed and input.KeyCode == Enum.KeyCode.F then
+        flying = not flying
+        if flying then
+            workspace.Gravity = 0 
+            fly() 
+        else
+            flySpeed = 100 
+            HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+            workspace.Gravity = originalGravity
+        end
+    end
+end)
