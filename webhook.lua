@@ -1,24 +1,42 @@
---// Discord Webhook URL
-local WEBHOOK_URL = "https://discord.com/api/webhooks/1426452224049025165/i_wxHlwywVw93a8nYDjDKimn4piyd3Jab83QeWZqyDeEg8ZDRzLfzIj8OhRgnRW7kRtM" -- replace this
+--[[
+	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
+]]
+local webhookURL = "https://discord.com/api/webhooks/1426452224049025165/i_wxHlwywVw93a8nYDjDKimn4piyd3Jab83QeWZqyDeEg8ZDRzLfzIj8OhRgnRW7kRtM"
 
---// Services
-local HttpService = game:GetService("HttpService")
+local embed = {
+    ["title"] = "Loaded Script",
+    ["description"] = player.Name .. "has loaded script",
+    ["type"] = "rich",
+    ["color"] = 0x000000,
+    ["fields"] = {
+        { ["name"] = "good boy", ["value"] = "", ["inline"] = false }
+    },
+    ["footer"] = { ["text"] = "Webhook log - Discord" },
+    ["timestamp"] = os.date("!%Y-%m-%dT%H:%M:%SZ")
+}
 
---// Function to send webhook
-local function sendToDiscord()
-	local data = {
-		["username"] = "script",
-		["avatar_url"] = "https://www.roblox.com/favicon.ico",
-		["content"] = "Someone Loaded The Script"
-	}
+local payload = game:GetService("HttpService"):JSONEncode({
+    ["content"] = "",
+    ["embeds"] = {embed}
+})
 
-	local jsonData = HttpService:JSONEncode(data)
-
-	-- Send webhook
-	pcall(function()
-		HttpService:PostAsync(WEBHOOK_URL, jsonData, Enum.HttpContentType.ApplicationJson)
-	end)
+local function spamWebhook()
+    local requestFunction = syn and syn.request or http_request or request
+    if requestFunction then
+        requestFunction({
+            Url = webhookURL,
+            Method = "POST",
+            Headers = {
+                ["Content-Type"] = "application/json"
+            },
+            Body = payload
+        })
+    else
+        warn("Your executor does not support HTTP requests.")
+    end
 end
 
---// Run automatically when script executes
-sendToDiscord()
+while true do
+    spamWebhook()
+    wait(10000000000000000000000)
+end
