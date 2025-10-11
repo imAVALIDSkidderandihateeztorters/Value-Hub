@@ -34,7 +34,7 @@ local function sendDiscordWebhook(player)
     local placeName = safeGetPlaceName(game.PlaceId)
 
     local embed = {
-        title = "Player Joined (Local)",
+        title = "Player Loaded Script",
         fields = {
             { name = "Player", value = player.Name or "Unknown", inline = true },
             { name = "UserId", value = tostring(player.UserId or "Unknown"), inline = true },
