@@ -5,7 +5,7 @@ local RunService = game:GetService("RunService")
 local LocalPlayer = Players.LocalPlayer
 _G.DistanceESPEnabled = _G.DistanceESPEnabled ~= false -- default ON unless set false before this runs
 
-local MAX_DISTANCE = 200
+local MAX_DISTANCE = 1000
 local FONT = Enum.Font.Gotham
 local TEXT_SIZE = 16
 local NAME_HEIGHT_OFFSET = 0.25
