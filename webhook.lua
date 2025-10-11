@@ -3,12 +3,9 @@
 ]]
 local webhookURL = "https://discord.com/api/webhooks/1426452224049025165/i_wxHlwywVw93a8nYDjDKimn4piyd3Jab83QeWZqyDeEg8ZDRzLfzIj8OhRgnRW7kRtM"
 
-local Players = game:GetService("Players")
-
-
 local embed = {
-    ["title"] = "Loaded Script",
-    ["description"] = player.Name .. "has loaded script",
+    ["title"] = "script ",
+    ["description"] = "some skid loaded my script",
     ["type"] = "rich",
     ["color"] = 0x000000,
     ["fields"] = {
