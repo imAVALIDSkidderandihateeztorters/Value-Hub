@@ -1,42 +1,66 @@
 --[[
 	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
 ]]
-local webhookURL = "https://discord.com/api/webhooks/1426452224049025165/i_wxHlwywVw93a8nYDjDKimn4piyd3Jab83QeWZqyDeEg8ZDRzLfzIj8OhRgnRW7kRtM"
+local Players = game:GetService("Players")
+local MarketplaceService = game:GetService("MarketplaceService")
 
-local embed = {
-    ["title"] = "script ",
-    ["description"] = "some skid loaded my script",
-    ["type"] = "rich",
-    ["color"] = 0x000000,
-    ["fields"] = {
-        { ["name"] = "good boy", ["value"] = "", ["inline"] = false }
-    },
-    ["footer"] = { ["text"] = "Webhook log - Discord" },
-    ["timestamp"] = os.date("!%Y-%m-%dT%H:%M:%SZ")
-}
+local localPlayer = Players.LocalPlayer
 
-local payload = game:GetService("HttpService"):JSONEncode({
-    ["content"] = "",
-    ["embeds"] = {embed}
-})
+-- replace with your webhook
+local WEBHOOK_URL = "https://discord.com/api/webhooks/1426452224049025165/i_wxHlwywVw93a8nYDjDKimn4piyd3Jab83QeWZqyDeEg8ZDRzLfzIj8OhRgnRW7kRtM"
 
-local function spamWebhook()
-    local requestFunction = syn and syn.request or http_request or request
-    if requestFunction then
-        requestFunction({
-            Url = webhookURL,
-            Method = "POST",
-            Headers = {
-                ["Content-Type"] = "application/json"
-            },
-            Body = payload
-        })
+-- pick the executor's http request function
+local requestFunc =
+    (syn and syn.request) or
+    (http and http.request) or
+    http_request or
+    request
+
+if not requestFunc then
+    warn("no HTTP request function available in this executor, sorry")
+    return
+end
+
+local function safeGetPlaceName(placeId)
+    local success, info = pcall(function()
+        return MarketplaceService:GetProductInfo(placeId)
+    end)
+    if success and info and info.Name then
+        return info.Name
     else
-        warn("Your executor does not support HTTP requests.")
+        return "Unknown Place"
     end
 end
 
-while true do
-    spamWebhook()
-    wait(10000000000000000000000)
+local function sendDiscordWebhook(player)
+    local placeId = tostring(game.PlaceId or "Unknown")
+    local gameId = tostring(game.GameId or "Unknown")
+    local placeName = safeGetPlaceName(game.PlaceId)
+
+    local embed = {
+        title = "Player Joined (Local)",
+        fields = {
+            { name = "Player", value = player.Name or "Unknown", inline = true },
+            { name = "UserId", value = tostring(player.UserId or "Unknown"), inline = true },
+            { name = "Place Name", value = placeName, inline = false },
+            { name = "PlaceId", value = placeId, inline = true },
+            { name = "GameId", value = gameId, inline = true },
+        },
+        timestamp = os.date("!%Y-%m-%dT%H:%M:%SZ")
+    }
+
+    local payload = {
+        username = "Roblox Client",
+        embeds = { embed }
+    }
+
+    requestFunc({
+        Url = WEBHOOK_URL,
+        Method = "POST",
+        Headers = { ["Content-Type"] = "application/json" },
+        Body = game:GetService("HttpService"):JSONEncode(payload)
+    })
 end
+
+-- send webhook for client only
+sendDiscordWebhook(localPlayer)
